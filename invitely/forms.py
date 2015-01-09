@@ -24,13 +24,23 @@ class InvitationUsageForm(forms.Form):
 
     def save(self):
         with transaction.atomic():
-            invitation = Invitation.objects.get(code=self.cleaned_data['code'])
+            try:
+                invitation = Invitation.objects.get(code=self.cleaned_data['code'])
 
-            # Save the invitation usage action.
-            invitation_usage = InvitationUsage()
-            invitation_usage.invitation = invitation
-            invitation_usage.session_key = self.cleaned_data['session_key']
-            invitation_usage.save()
+                try:
+                    invitation_usage = InvitationUsage.objects.get(
+                        invitation=invitation,
+                        session_key=self.cleaned_data['session_key'],
+                    )
+                except InvitationUsage.DoesNotExist as e:
+                    # Save the invitation usage action.
+                    invitation_usage = InvitationUsage()
+                    invitation_usage.invitation = invitation
+                    invitation_usage.session_key = self.cleaned_data['session_key']
+                invitation_usage.save()
 
-            # Update invitation accordingly.
-            invitation.update_status()
+                # Update invitation accordingly.
+                invitation.update_status()
+            except Exception as e:
+                # TODO: Log exception
+                pass

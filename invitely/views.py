@@ -7,6 +7,8 @@ from .forms import InvitationUsageForm
 
 
 def invitation(request, invitation_code=''):
+    if not request.session.get('has_session'):
+        request.session['has_session'] = True
     if request.user.is_authenticated():
         return redirect(request.session.get('origin_path', '/'))
 
