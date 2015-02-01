@@ -12,8 +12,8 @@ class InvitationRequiredDecorator(object):
     def __call__(self, *args, **kwargs):
         request = args[0]
 
-        if InvitationUsage.get_invitation_from_session(request.session.session_key) or path_is_allowed(request.path):
+        if request.user.is_authenticated() or InvitationUsage.get_invitation_from_session(request.session.session_key) or path_is_allowed(request.path):
             return self.view_func(*args, **kwargs)
         else:
             request.session['origin_path'] = request.path
-            return redirect('%s?n=%s' % (reverse('invitely:invitation'), request.path))
+            return redirect('%s?n=%s' % (reverse('invitely_invitation'), request.path))

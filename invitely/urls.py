@@ -4,5 +4,5 @@ from . import views
 
 
 urlpatterns = patterns('',
-    url(r'^invitation/(?P<invitation_code>.+)?/?$', views.invitation, name='invitation',)
+    url(r'^invitation/?(?P<invitation_code>[\w|\W]+)?/?$', views.invitation, name='invitation',)
 )

@@ -2,7 +2,7 @@
 {% load i18n %}
 
 {% block content %}
-    <form action="{% url 'invitely:invitation' %}" method="post">{% csrf_token %}
+    <form action="{% url 'invitely_invitation' %}" method="post">{% csrf_token %}
         {{ invitation_usage_form.as_p }}
         <p>
             <button type="submit">{% trans "Submit" %}</button>
