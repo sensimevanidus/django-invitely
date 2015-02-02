@@ -23,7 +23,8 @@ def invitation(request, invitation_code=''):
             messages.add_message(request, messages.ERROR, _(u'Silly error message'))
     else:
         try:
-            request.session.session_key
+            if not request.session.session_key:
+                request.session.save()
         except:
             request.session.save()
         invitation_usage_form = InvitationUsageForm(initial={
