@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import random
 from django.db import models, IntegrityError
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
@@ -31,6 +32,13 @@ class Invitation(models.Model):
         if usage_count >= self.limit:
             self.status = 'F'
             self.save()
+
+    @staticmethod
+    def generate_code():
+        code = ''.join(random.choice('0123456789') for i in range(6))
+        while Invitation.objects.filter(code=code).exists():
+            code = ''.join(random.choice('0123456789') for i in range(6))
+        return code
 
 
 class InvitationUsage(models.Model):

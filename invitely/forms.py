@@ -44,3 +44,9 @@ class InvitationUsageForm(forms.Form):
             except Exception as e:
                 # TODO: Log exception
                 pass
+
+
+class InvitationForm(forms.ModelForm):
+    class Meta:
+        model = Invitation
+        fields = ['code', 'sent_by']
