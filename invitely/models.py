@@ -34,10 +34,10 @@ class Invitation(models.Model):
             self.save()
 
     @staticmethod
-    def generate_code():
-        code = ''.join(random.choice('0123456789') for i in range(6))
+    def generate_code(length, alphabet='0123456789'):
+        code = ''.join(random.choice(alphabet) for i in range(length))
         while Invitation.objects.filter(code=code).exists():
-            code = ''.join(random.choice('0123456789') for i in range(6))
+            code = ''.join(random.choice(alphabet) for i in range(length))
         return code
 
 
